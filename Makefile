@@ -30,13 +30,13 @@ update: kicad-source-mirror/README.txt kicad-library/README.md kicad-doc/CMakeLi
 tars: kicad-$(TIMESTAMP).tar.xz kicad-libraries-$(TIMESTAMP).tar.xz kicad-doc-$(TIMESTAMP).tar.xz kicad-walter-libraries-$(TIMESTAMP).tar.xz
 
 kicad-$(TIMESTAMP).tar.xz: kicad-source-mirror/README.txt
-	(cd kicad-source-mirror && git archive --format=tar $(MAIN_REV)) | $(XZ) > $@
+	(cd kicad-source-mirror && git archive --prefix=kicad-$(TIMESTAMP)/ --format=tar $(MAIN_REV)) | $(XZ) > $@
 
 kicad-libraries-$(TIMESTAMP).tar.xz: kicad-library/README.md
-	(cd kicad-library && git archive --format=tar $(LIB_REV)) | $(XZ) > $@
+	(cd kicad-library && git archive --prefix=kicad-libraries-$(TIMESTAMP)/ --format=tar $(LIB_REV)) | $(XZ) > $@
 
 kicad-doc-$(TIMESTAMP).tar.xz: kicad-doc/CMakeLists.txt
-	(cd kicad-doc && git archive --format=tar $(DOC_REV)) | $(XZ) > $@
+	(cd kicad-doc && git archive --prefix=kicad-doc-$(TIMESTAMP)/ --format=tar $(DOC_REV)) | $(XZ) > $@
 
 # kicad-walter-libraries is the .zip files we downloaded from Walter's website.
 # kicad-walter-libraries-$(TIMESTAMP) is the unzipped files that act as the source for the tar.
