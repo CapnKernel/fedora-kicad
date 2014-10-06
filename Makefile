@@ -1,7 +1,17 @@
-TIMESTAMP:=2014.03.13
-MAIN_REV:=d00fae58
-LIB_REV:=742f6843
-DOC_REV:=80fc0ae7
+# TIMESTAMP:=2014.03.13
+# MAIN_REV:=d00fae58
+# LIB_REV:=742f6843
+# DOC_REV:=80fc0ae7
+
+# TIMESTAMP:=2014.07.20
+# MAIN_REV:=2196ed21
+# LIB_REV:=44688196
+# DOC_REV:=12c2a3b1
+
+TIMESTAMP:=2014.10.07
+MAIN_REV:=99f30c9d
+LIB_REV:=0023d6fb
+DOC_REV:=92081952
 
 # Use parallel xz if it's available, otherwise fall back to xz
 XZ:=$(shell type -p pxz || type -p xz)

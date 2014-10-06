@@ -1,0 +1,20 @@
+--- kicad-2014.07.20/CMakeLists.txt.orig	2014-10-06 09:57:15.070000000 -0400
++++ kicad-2014.07.20/CMakeLists.txt	2014-10-06 09:58:08.005000000 -0400
+@@ -171,8 +171,6 @@
+     endif()
+ 
+     if( MINGW )
+-        set( CMAKE_EXE_LINKER_FLAGS_RELEASE "-s" )
+-
+         # _UNICODE definition seems needed under mingw/gcc 4.8
+         # (Kicad uses unicode, and on Windows, wxWidgets >= 2.9.4 is mandatory
+         # and uses unicode)
+@@ -208,8 +206,6 @@
+             set( CMAKE_SHARED_LINKER_FLAGS "${TO_LINKER},--no-undefined" )
+             set( CMAKE_MODULE_LINKER_FLAGS "${TO_LINKER},--no-undefined" )
+ 
+-            set( CMAKE_EXE_LINKER_FLAGS_RELEASE "-s" )
+-
+             # Defeat ELF's ability to use the GOT to replace locally implemented functions
+             # with ones from another module.
+             # https://bugs.launchpad.net/kicad/+bug/1322354

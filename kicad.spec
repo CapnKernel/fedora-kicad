@@ -1,6 +1,6 @@
 Name:           kicad
-Version:        2014.03.13
-Release:        8.rev4744%{?dist}
+Version:        2014.10.07
+Release:        11.rev5164%{?dist}
 Summary:        Electronic schematic diagrams and printed circuit board artwork
 Summary(fr):    Saisie de schéma électronique et routage de circuit imprimé
 
@@ -24,15 +24,16 @@ Source2:        %{name}-libraries-%{version}.tar.xz
 Source7:        Epcos-MKT-1.0.tar.bz2
 Source8:        %{name}-walter-libraries-%{version}.tar.xz
 
-Patch0:         pcb_calculator-desktop-fix.patch
-Patch1:         kicad-2014.03.13-nostrip.patch
+Patch1:         kicad-2014.07.20-nostrip.patch
+Patch2:         kicad-2014.10.07-wx3.patch
 
 BuildRequires:  desktop-file-utils
-BuildRequires:  wxGTK-devel
+BuildRequires:  wxGTK3-devel
 BuildRequires:  boost-devel
 BuildRequires:  cmake
 BuildRequires:  doxygen
 BuildRequires:  glew-devel
+BuildRequires:  openssl-devel
 
 Requires:       electronics-menu
 
@@ -180,8 +181,8 @@ Documentation and tutorials for Kicad in Chinese
 %prep
 %setup -q -a 1 -a 2 -a 7 -a 8
 
-%patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 #kicad-doc.noarch: W: file-not-utf8 /usr/share/doc/kicad/AUTHORS.txt
 iconv -f iso8859-1 -t utf-8 AUTHORS.txt > AUTHORS.conv && mv -f AUTHORS.conv AUTHORS.txt
@@ -213,7 +214,7 @@ cd ..
 #
 pushd %{name}-libraries-%{version}/
 %cmake -DKICAD_STABLE_VERSION=OFF
-%{__make} -j1 VERBOSE=1
+%{__make} %{?_smp_mflags} # VERBOSE=1
 popd
 
 
@@ -221,7 +222,7 @@ popd
 # Core components
 #
 %cmake -DKICAD_STABLE_VERSION=OFF -DKICAD_SKIP_BOOST=ON
-%{__make} -j1 VERBOSE=1
+%{__make} %{?_smp_mflags} # VERBOSE=1
 
 
 %install
