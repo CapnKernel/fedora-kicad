@@ -34,7 +34,7 @@ kicad-walter-libraries/robots.txt:
 update: kicad-source-mirror/README.txt kicad-library/README.md kicad-doc/CMakeLists.txt
 	git -C kicad-source-mirror pull
 	git -C kicad-library pull
-	git -C kicad-library pull
+	git -C kicad-doc pull
 	wget --recursive --timestamping --level=1 --cut-dirs=1 --accept=zip --no-host-directories --directory-prefix=kicad-walter-libraries --no-verbose http://smisioto.no-ip.org/elettronica/kicad/kicad-en.htm
 
 tars: kicad-$(TIMESTAMP).tar.xz kicad-libraries-$(TIMESTAMP).tar.xz kicad-doc-$(TIMESTAMP).tar.xz kicad-walter-libraries-$(TIMESTAMP).tar.xz
