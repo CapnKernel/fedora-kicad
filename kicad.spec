@@ -1,6 +1,10 @@
 Name:           kicad
-Version:        2014.10.07
-Release:        11.rev5164%{?dist}
+# Version:        2014.03.13
+# Release:        8.rev4744%{?dist}
+# Version:        2014.07.20
+# Release:        10.rev4029%{?dist}
+Version:        2014.11.15
+Release:        13.rev5284%{?dist}
 Summary:        Electronic schematic diagrams and printed circuit board artwork
 Summary(fr):    Saisie de schéma électronique et routage de circuit imprimé
 
@@ -11,6 +15,7 @@ URL:            http://www.kicad-pcb.org
 # URL3:         http://orson.net.pl/pub/kicad/
 # Additional librairies from Walter Lain
 # URL4:         http://smisioto.no-ip.org/elettronica/kicad/kicad-en.htm
+# Url9:           http://downloads.sourceforge.net/project/boost/boost/1.54.0/boost_1_54_0.tar.bz2
 
 # Source files created with the following scripts ...
 #   kicad-clone.sh ... clone BZR repositories of main, libraries, doc
@@ -23,10 +28,16 @@ Source1:        %{name}-doc-%{version}.tar.xz
 Source2:        %{name}-libraries-%{version}.tar.xz
 Source7:        Epcos-MKT-1.0.tar.bz2
 Source8:        %{name}-walter-libraries-%{version}.tar.xz
+# Source9:        boost_1_54_0.tar.bz2
 
+Patch0:         pcb_calculator-desktop-fix.patch
+# Patch1:         kicad-2014.03.13-nostrip.patch
 Patch1:         kicad-2014.07.20-nostrip.patch
 Patch2:         kicad-2014.10.07-wx3.patch
+# Patch4:         kicad-2014.11.15-turn-off-bzr-1.patch
 
+# FIXME: Do we need bzip2-devel if we're not building boost?
+BuildRequires:  bzip2-devel
 BuildRequires:  desktop-file-utils
 BuildRequires:  wxGTK3-devel
 BuildRequires:  boost-devel
@@ -34,6 +45,7 @@ BuildRequires:  cmake
 BuildRequires:  doxygen
 BuildRequires:  glew-devel
 BuildRequires:  openssl-devel
+BuildRequires:  gcc-c++
 
 Requires:       electronics-menu
 
@@ -181,8 +193,10 @@ Documentation and tutorials for Kicad in Chinese
 %prep
 %setup -q -a 1 -a 2 -a 7 -a 8
 
+# %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+# %patch4 -p1
 
 #kicad-doc.noarch: W: file-not-utf8 /usr/share/doc/kicad/AUTHORS.txt
 iconv -f iso8859-1 -t utf-8 AUTHORS.txt > AUTHORS.conv && mv -f AUTHORS.conv AUTHORS.txt
@@ -194,6 +208,9 @@ iconv -f iso8859-1 -t utf-8 AUTHORS.txt > AUTHORS.conv && mv -f AUTHORS.conv AUT
 #%{__sed} -i "s|/usr/lib/kicad|/usr/lib64/kicad|" %{SOURCE3}
 %endif
 
+# # Throw Boost tar file in
+# mkdir .downloads-by-cmake
+# cp %{SOURCE9} .downloads-by-cmake/
 
 %build
 
@@ -213,17 +230,18 @@ cd ..
 # Symbols libraries
 #
 pushd %{name}-libraries-%{version}/
-%cmake -DKICAD_STABLE_VERSION=OFF
-%{__make} %{?_smp_mflags} # VERBOSE=1
+# %cmake -DKICAD_SKIP_BOOST=OFF
+%cmake -DKICAD_SKIP_BOOST=ON
+%{__make}  %{?_smp_mflags} VERBOSE=1
 popd
 
 
 #
 # Core components
 #
-%cmake -DKICAD_STABLE_VERSION=OFF -DKICAD_SKIP_BOOST=ON
+# %cmake -DKICAD_SKIP_BOOST=OFF
+%cmake -DKICAD_SKIP_BOOST=ON
 %{__make} %{?_smp_mflags} # VERBOSE=1
-
 
 %install
 %{__rm} -rf %{buildroot}
@@ -245,7 +263,6 @@ for desktopfile in %{buildroot}%{_datadir}/applications/*.desktop ; do
   desktop-file-install \
   --dir %{buildroot}%{_datadir}/applications \
   --remove-category Development              \
-  --delete-original                          \
   ${desktopfile}
 done
 
