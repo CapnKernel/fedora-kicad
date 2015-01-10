@@ -1,3 +1,19 @@
+# Fetching a new version:
+#
+#  - Update TIMESTAMP to be today's date
+#
+#  - Go to https://github.com/KiCad/kicad-source-mirror
+#    Look for "latest commit" hash
+#    Copy the hash to MAIN_REV
+#
+#  - Go to https://github.com/KiCad/kicad-library
+#    Look for "latest commit" hash
+#    Copy the hash to LIB_REV
+#
+#  - Go to https://github.com/blairbonnett-mirrors/kicad-doc
+#    Look for "latest commit" hash
+#    Copy the hash to DOC_REV
+
 # TIMESTAMP:=2014.03.13
 # MAIN_REV:=d00fae58
 # LIB_REV:=742f6843
@@ -8,12 +24,14 @@
 # LIB_REV:=44688196
 # DOC_REV:=12c2a3b1
 
-TIMESTAMP:=2014.10.07
-MAIN_REV:=99f30c9d
-LIB_REV:=0023d6fb
-DOC_REV:=92081952
+TIMESTAMP:=2014.11.15
+MAIN_REV:=9245b90
+LIB_REV:=2c93827
+DOC_REV:=b544666
 
 # Use parallel xz if it's available, otherwise fall back to xz
+# (installing the pxz package will make compression much faster
+# on a multicore machine)
 XZ:=$(shell type -p pxz || type -p xz)
 
 repos: kicad-source-mirror/README.txt kicad-library/README.md kicad-doc/CMakeLists.txt kicad-walter-libraries/robots.txt
